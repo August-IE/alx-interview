@@ -12,7 +12,7 @@ def parse_log_line(line: str) -> tuple:
     Parses a single line of HTTP request log.
     Returns a tuple containing status code and file size.
     """
-    regex = re.compile{r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - '
+    regex = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - '
                        r'\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+)\] '
                        r'"GET /projects/260 HTTP/1.1" (\S{3}) (\d+)')
     match = regex.match(line)
