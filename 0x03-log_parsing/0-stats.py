@@ -60,6 +60,8 @@ if __name__ == "__main__":
                 line_count += 1
                 if line_count % 10 == 0:
                     output_statistics(log)
+                else:
+                    continue  # skip lines with wrong format
     except KeyboardInterrupt:
         pass
     finally:
