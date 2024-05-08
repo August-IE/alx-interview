@@ -12,26 +12,34 @@ def validUTF8(data):
         True if data is a valid UTF-8 encoding, else return False.
     """
     def is_continuation(byte):
-        return byte & 0b11000000 == 0b10000000
+        return (byte & 0b11000000) == 0b10000000
 
     i = 0
     while i < len(data):
         byte = data[i]
-        if byte < 0 or byte > 255:
-            return False
-        if byte <= 0x7F:
+        if byte & 0b10000000 == 0:
+            # single byte character
             i += 1
-            continue
-        if byte & 0b11100000 == 0b11000000:
-            span = 1
+        elif byte & 0b11100000 == 0b11000000:
+            # two byte character
+            if i + 1 >= len(data) or not is_continuation(data[i + 1]):
+                return False
+            i += 2
         elif byte & 0b11110000 == 0b11100000:
-            span = 2
+            # three byte character
+            if i + 2 >= len(data) or \
+               not is_continuation(data[i + 1]) or \
+               not is_continuation(data[i + 2]):
+                return False
+            i += 3
         elif byte & 0b11111000 == 0b11110000:
-            span = 3
+            # four byte character
+            if i + 3 >= len(data) or \
+               not is_continuation(data[i + 1]) or \
+               not is_continuation(data[i + 2]) or \
+               not is_continuation(data[i + 3]):
+                return False
+            i += 4
         else:
             return False
-        for j in range(1, span + 1):
-            if i + j >= len(data) or not is_continuation(data[i + j]):
-                return False
-            i += span + 1
     return True
