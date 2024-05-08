@@ -14,10 +14,13 @@ def validUTF8(data):
     def is_continuation(byte):
         return byte & 0b11000000 == 0b10000000
 
-    for byte in data:
+    i = 0
+    while i < len(data):
+        byte = data[i]
         if byte < 0 or byte > 255:
             return False
         if byte <= 0x7F:
+            i += 1
             continue
         if byte & 0b11100000 == 0b11000000:
             span = 1
@@ -27,7 +30,8 @@ def validUTF8(data):
             span = 3
         else:
             return False
-        for i in range(1, span + 1):
-            if not (i < len(data) and is_continuation(data[i])):
+        for j in range(1, span + 1):
+            if i + j >= len(data) or not is_continuation(data[i + j]):
                 return False
+            i += span + 1
     return True
