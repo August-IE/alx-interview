@@ -16,21 +16,25 @@ def isWinner(x, nums):
     if x < 1 or not nums:
         return None
 
+    def sieve(n):
+        """Generate a list of primes up to n using the Sieve of Eratosthenes."""
+        primes = [True] * (n + 1)
+        primes[0] = primes[1] = False  # 0 and 1 are not primes
+        for i in range(2, int(n**0.5) + 1):
+            if primes[i]:
+                for j in range(i * i, n + 1, i):
+                    primes[j] = False
+        return primes
+
+    def count_primes(primes, n):
+        """Count the number of primes up to n."""
+        return sum(primes[:n+1])
+
     marias_wins, bens_wins = 0, 0
 
-    # Generate primes up to the maximum number in nums
-    n = max(nums)
-    primes = [True] * (n + 1)
-    primes[0] = primes[1] = False  # 0 and 1 are not primes
-
-    for i in range(2, int(n**0.5) + 1):
-        if primes[i]:
-            for j in range(i * i, n + 1, i):
-                primes[j] = False
-
-    # Calculate the cumulative number of primes up to each index
-    for num in nums:
-        primes_count = sum(primes[0:num])
+    for n in nums:
+        primes = sieve(n)
+        primes_count = count_primes(primes, n)
         if primes_count % 2 == 0:
             bens_wins += 1
         else:
@@ -38,4 +42,4 @@ def isWinner(x, nums):
 
     if marias_wins == bens_wins:
         return None
-    return 'Maria' if marias_wins > bens_wins else 'Ben'
+    return 'Maria' if marias_wins > bens_wins else 'Ben' 
