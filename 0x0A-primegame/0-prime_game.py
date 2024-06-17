@@ -17,7 +17,7 @@ def isWinner(x, nums):
         return None
 
     def sieve(n):
-        """Generate a list of primes up to n using the Sieve of Eratosthenes."""
+        """Generate a list of primes to n using the Sieve of Eratosthenes."""
         primes = [True] * (n + 1)
         primes[0] = primes[1] = False  # 0 and 1 are not primes
         for i in range(2, int(n**0.5) + 1):
@@ -42,4 +42,4 @@ def isWinner(x, nums):
 
     if marias_wins == bens_wins:
         return None
-    return 'Maria' if marias_wins > bens_wins else 'Ben' 
+    return 'Maria' if marias_wins > bens_wins else 'Ben'
