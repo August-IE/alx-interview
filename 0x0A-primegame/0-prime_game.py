@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""Prime game by two players.
-"""
+"""Prime game by two players."""
 
 
 def isWinner(x, nums):
@@ -16,7 +15,9 @@ def isWinner(x, nums):
     """
     if x < 1 or not nums:
         return None
+
     marias_wins, bens_wins = 0, 0
+
     # Generate primes up to the maximum number in nums
     n = max(nums)
     primes = [True] * (n + 1)
@@ -27,14 +28,14 @@ def isWinner(x, nums):
             for j in range(i * i, n + 1, i):
                 primes[j] = False
 
-    # Count primes up to each number in nums and determine round winners
+    # Calculate the cumulative number of primes up to each index
     for num in nums:
-        primes_count = sum(primes[0:num + 1])
+        primes_count = sum(primes[0:num])
         if primes_count % 2 == 0:
             bens_wins += 1
         else:
             marias_wins += 1
 
-        if marias_wins == bens_wins:
-            return None
-        return 'Maria' if marias_wins > bens_wins else 'Ben'
+    if marias_wins == bens_wins:
+        return None
+    return 'Maria' if marias_wins > bens_wins else 'Ben'
